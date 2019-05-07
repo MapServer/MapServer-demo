@@ -56,6 +56,14 @@ MAP
     END
   END 
 
+  OUTPUTFORMAT
+    NAME "geojson"
+    DRIVER "OGR/GEOJSON"
+    MIMETYPE "application/json"
+    FORMATOPTION "FORM=SIMPLE"
+    FORMATOPTION "STORAGE=memory"
+  END
+
   #
   # Start of web interface definition (including WMS enabling metadata)
   #
@@ -67,19 +75,20 @@ MAP
     MAXSCALE 1550000
 
     # change the next two lines to match your setup
-    IMAGEPATH "/usr/local/www/docs_maps/tmp/"    
+    IMAGEPATH "/var/www/html/tmp/"
     IMAGEURL "/tmp/"
 
     METADATA
       WMS_TITLE "MapServer Itasca Demo"
       WMS_ABSTRACT "This is a MapServer demo application for Itasca County located in north central Minnesota."
       WMS_ACCESSCONSTRAINTS "none"
-      WMS_ENABLE_REQUEST "*"
+      OWS_ENABLE_REQUEST "*"
 
       # change this value to match your setup
-      WMS_ONLINERESOURCE "http://localhost.localdomain/mapserver_demos/itasca/index.html"
-
-      WMS_SRS "EPSG:26915"
+      OWS_ONLINERESOURCE "http://localhost/cgi-bin/mapserv?map=/usr/local/www/docs_maps/mapserver_demos/itasca/itasca.map&"
+      WFS_SRS "EPSG:26915 EPSG:3857"
+      "wfs_getfeature_formatlist" "gml,geojson"
+      WMS_SRS "EPSG:26915 EPSG:3857"
     END
   END
 
@@ -157,7 +166,7 @@ MAP
   LAYER
     NAME ctybdpy2
     TYPE POLYGON
-    STATUS DEFAULT
+    STATUS OFF
     DATA ctybdpy2
 
     # no need for a background IF the USGS quads are being drawn
@@ -422,6 +431,9 @@ MAP
     NAME airports
     TYPE POINT
     DATA airports
+    PROJECTION
+        'init=epsg:26915' 
+    END
     STATUS OFF
     CLASS
       NAME 'Airports'
@@ -442,6 +454,7 @@ MAP
       WMS_TITLE "Airports"
       WMS_ABSTRACT "Airport runways for Itasca County."
       WMS_SRS "EPSG:26915"
+     "gml_include_items" "all"
     END
   END
 
