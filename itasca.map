@@ -174,6 +174,7 @@ MAP
     TYPE POLYGON
     STATUS OFF
     DATA ctybdpy2
+    TEMPLATE "ttt"
 
     # no need for a background IF the USGS quads are being drawn
     REQUIRES "![drgs]"
@@ -199,7 +200,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END
@@ -229,7 +230,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END
@@ -238,6 +239,7 @@ MAP
     NAME twprgpy3
     TYPE POLYGON
     DATA twprgpy3
+    TEMPLATE "ttt"
     STATUS OFF
     CLASS
       NAME 'Townships'
@@ -253,7 +255,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END
@@ -263,6 +265,10 @@ MAP
     TYPE POLYGON
     STATUS OFF
     DATA lakespy2
+
+    PROJECTION
+        'init=epsg:26915' 
+    END
 
     CLASS
       NAME 'Lakes & Rivers'
@@ -283,7 +289,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END # lakes
@@ -313,7 +319,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END # streams
@@ -324,11 +330,16 @@ MAP
     MAXSCALEDENOM 300000
     STATUS OFF
     DATA ctyrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     CLASS
       STYLE
         COLOR 0 0 0
       END
+    END
+
+    PROJECTION
+        'init=epsg:26915' 
     END
 
     METADATA
@@ -337,7 +348,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END # county roads
@@ -348,6 +359,7 @@ MAP
     MAXSCALEDENOM 300000
     STATUS OFF
     DATA ctyrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     LABELITEM "road_name"
     CLASS
@@ -370,7 +382,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END # county road annotation
@@ -381,6 +393,7 @@ MAP
     MAXSCALEDENOM 600000
     STATUS OFF
     DATA majrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     CLASS
       NAME "Roads"
@@ -395,7 +408,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END # highways
@@ -406,6 +419,7 @@ MAP
     MAXSCALEDENOM 600000
     STATUS OFF
     DATA majrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     LABELITEM "road_num"    
     CLASSITEM "road_class"
@@ -458,7 +472,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END # highway annotation
@@ -492,7 +506,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "NAME"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END
@@ -500,6 +514,7 @@ MAP
   LAYER
     NAME mcd90py2_anno
     GROUP cities
+    TEMPLATE "ttt"
     TYPE POINT
     DATA mcd90py2
     STATUS OFF
@@ -526,7 +541,7 @@ MAP
       WMS_SRS "EPSG:26915"
 
       GML_INCLUDE_ITEMS "all"
-      GML_FEATUREID "RECNO"
+      GML_FEATUREID "FID"
       GML_TYPES "auto"
     END
   END
