@@ -22,7 +22,7 @@ Installation
 Requirements
 ------------
 
-- MapServer version 7.x, basic build
+- MapServer version 8.x, basic build
 
 Questions and/or comments should be sent to Stephen Lime, <steve.lime@state.mn.us>, 
 or to the mailing lists at http://www.mapserver.org/community/lists.html

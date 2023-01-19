@@ -6,8 +6,6 @@ MAP
   STATUS ON
   SIZE 600 600
 
-  # TOCHECK update path to the location of proj.db
-  CONFIG "PROJ_LIB" "C:/MapServer/bin/proj7/SHARE"
   PROJECTION
     "init=epsg:26915"
   END
@@ -69,13 +67,13 @@ MAP
   # Start of web interface definition (including WMS enabling metadata)
   #
   WEB
-    HEADER templates/header.html
-    TEMPLATE "set in index.html"
-    FOOTER templates/footer.html    
+    HEADER "templates/header.html"
+    TEMPLATE "itasca_basic.html" # this can be changed by the index.html web application
+    FOOTER "templates/footer.html"
     MINSCALEDENOM 1000
     MAXSCALEDENOM 1550000
 
-    # change the next two lines to match your setup
+    # TOCHECK change the next two lines to match your setup
     IMAGEPATH "/var/www/html/tmp/"
     IMAGEURL "/tmp/"
 
@@ -86,8 +84,8 @@ MAP
       OWS_ENABLE_REQUEST "*"
 
       # TOCHECK change the next two lines to match your setup
-      OGA_HTML_TEMPLATE_DIRECTORY "C:/MapServer/bin/templates/html-bootstrap4/"
-      OGA_ONLINERESOURCE "http://localhost/mapserver2/itasca/ogcapi"
+      OGA_HTML_TEMPLATE_DIRECTORY "/usr/share/mapserver/ogcapi/templates/html-plain/"
+      OGA_ONLINERESOURCE "http://localhost/cgi-bin/mapserv/itasca/ogcapi"
 
       # TOCHECK change this value to match your setup
       OWS_ONLINERESOURCE "http://localhost/cgi-bin/mapserv?map=/usr/local/www/docs_maps/mapserver_demos/itasca/itasca.map&"
@@ -120,7 +118,7 @@ MAP
     KEYSIZE 18 12
     LABEL
       TYPE BITMAP
-      SIZE MEDIUM        
+      SIZE MEDIUM
       COLOR 0 0 89
     END
     STATUS ON
