@@ -5,28 +5,17 @@ MAP
   NAME ITASCA
   STATUS ON
   SIZE 600 600
+
+  PROJECTION
+    "init=epsg:26915"
+  END
+
   EXTENT 388107.634400379 5203120.88405952 500896.339019834 5310243.30613897
   UNITS METERS
   SHAPEPATH "data"
   IMAGECOLOR 255 255 255
-  TEMPLATEPATTERN "itasca"
 
   IMAGETYPE PNG
-
-  #
-  # Projection definition, consult the PROJ.4 documentation for parameter discussion
-  #
-  PROJECTION
-  #   "proj=utm"
-  #   "ellps=GRS80"
-  #   "zone=15"
-  #   "north"
-  #   "no_defs"
-  #
-  #   OR: 
-  #
-    "init=epsg:26915"
-  END
 
   #
   # Start of symbol definitions (we're only using a few)
@@ -71,33 +60,37 @@ MAP
     IMAGEMODE RGB
     EXTENSION "png"
     FORMATOPTION "GAMMA=0.75"
-    TRANSPARENT TRUE
+    TRANSPARENT ON
   END
 
   #
   # Start of web interface definition (including WMS enabling metadata)
   #
   WEB
-    HEADER templates/header.html
-    TEMPLATE "set in index.html"
-    FOOTER templates/footer.html    
-    MINSCALE 1000
-    MAXSCALE 1550000
+    HEADER "templates/header.html"
+    TEMPLATE "itasca_basic.html" # this can be changed by the index.html web application
+    FOOTER "templates/footer.html"
+    MINSCALEDENOM 1000
+    MAXSCALEDENOM 1550000
 
-    # change the next two lines to match your setup
+    # TOCHECK change the next two lines to match your setup
     IMAGEPATH "/var/www/html/tmp/"
     IMAGEURL "/tmp/"
 
     METADATA
-      WMS_TITLE "MapServer Itasca Demo"
-      WMS_ABSTRACT "This is a MapServer demo application for Itasca County located in north central Minnesota."
+      OWS_TITLE "MapServer Itasca Demo"
+      OWS_ABSTRACT "This is a MapServer demo application for Itasca County located in north central Minnesota."
       WMS_ACCESSCONSTRAINTS "none"
       OWS_ENABLE_REQUEST "*"
 
-      # change this value to match your setup
+      # TOCHECK change the next two lines to match your setup
+      OGA_HTML_TEMPLATE_DIRECTORY "/usr/share/mapserver/ogcapi/templates/html-plain/"
+      OGA_ONLINERESOURCE "http://localhost/cgi-bin/mapserv/itasca/ogcapi"
+
+      # TOCHECK change this value to match your setup
       OWS_ONLINERESOURCE "http://localhost/cgi-bin/mapserv?map=/usr/local/www/docs_maps/mapserver_demos/itasca/itasca.map&"
-      WFS_SRS "EPSG:26915 EPSG:3857"
-      "wfs_getfeature_formatlist" "gml,geojson"
+      WFS_SRS "EPSG:26915 EPSG:3857 EPSG:4326"
+      WFS_GETFEATURE_FORMATLIST "gml,geojson"
       WMS_SRS "EPSG:26915 EPSG:3857"
     END
   END
@@ -125,7 +118,7 @@ MAP
     KEYSIZE 18 12
     LABEL
       TYPE BITMAP
-      SIZE MEDIUM        
+      SIZE MEDIUM
       COLOR 0 0 89
     END
     STATUS ON
@@ -166,8 +159,8 @@ MAP
     END
  
     METADATA
-      WMS_TITLE "USGS 1:250,000 Digital Raster Graphic"
-      WMS_ABSTRACT "Hibbing and Bemidji quadrangles."
+      OWS_TITLE "USGS 1:250,000 Digital Raster Graphic"
+      OWS_ABSTRACT "Hibbing and Bemidji quadrangles."
       WMS_SRS "EPSG:26915"
     END
     TILEINDEX drgidx
@@ -178,6 +171,7 @@ MAP
     TYPE POLYGON
     STATUS OFF
     DATA ctybdpy2
+    TEMPLATE "ttt"
 
     # no need for a background IF the USGS quads are being drawn
     REQUIRES "![drgs]"
@@ -198,9 +192,13 @@ MAP
       END
     END
     METADATA
-      WMS_TITLE "County Boundary"
-      WMS_ABSTRACT "Itasca County boundary shapefile."
+      OWS_TITLE "County Boundary"
+      OWS_ABSTRACT "Itasca County boundary shapefile."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END
 
@@ -223,12 +221,14 @@ MAP
     HEADER "templates/mcd90py2_header.html"
     FOOTER "templates/mcd90py2_footer.html"
 
-    DUMP TRUE # allow GML export
-
     METADATA
-      WMS_TITLE "Minor Civil Divisions"
-      WMS_ABSTRACT "Minor civil divisions for Itasca County (boundaries only)."
+      OWS_TITLE "Minor Civil Divisions"
+      OWS_ABSTRACT "Minor civil divisions for Itasca County (boundaries only)."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END
 
@@ -236,6 +236,7 @@ MAP
     NAME twprgpy3
     TYPE POLYGON
     DATA twprgpy3
+    TEMPLATE "ttt"
     STATUS OFF
     CLASS
       NAME 'Townships'
@@ -246,9 +247,13 @@ MAP
       END
     END
     METADATA
-      WMS_TITLE "Township Boundaries"
-      WMS_ABSTRACT "Pulic Land Survey (PLS) township boundaries for Itasca County."
+      OWS_TITLE "Township Boundaries"
+      OWS_ABSTRACT "Pulic Land Survey (PLS) township boundaries for Itasca County."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END
 
@@ -257,6 +262,10 @@ MAP
     TYPE POLYGON
     STATUS OFF
     DATA lakespy2
+
+    PROJECTION
+        'init=epsg:26915' 
+    END
 
     CLASS
       NAME 'Lakes & Rivers'
@@ -271,12 +280,14 @@ MAP
     
     TOLERANCE 3
 
-    DUMP TRUE # allow GML export
-
     METADATA
-      WMS_TITLE "Lakes and Rivers"
-      WMS_ABSTRACT "DLG lake and river polygons for Itasca County."
+      OWS_TITLE "Lakes and Rivers"
+      OWS_ABSTRACT "DLG lake and river polygons for Itasca County."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END # lakes
 
@@ -297,23 +308,26 @@ MAP
     HEADER "templates/dlgstln2_header.html"
     FOOTER "templates/dlgstln2_footer.html"
 
-    TOLERANCE 5    
-
-    DUMP TRUE # allow GML export
+    TOLERANCE 5
 
     METADATA
-      WMS_TITLE "Streams"
-      WMS_ABSTRACT "DLG streams for Itasca County."
+      OWS_TITLE "Streams"
+      OWS_ABSTRACT "DLG streams for Itasca County."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END # streams
 
   LAYER
     NAME ctyrdln3
     GROUP roads
-    MAXSCALE 300000
+    MAXSCALEDENOM 300000
     STATUS OFF
     DATA ctyrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     CLASS
       STYLE
@@ -321,19 +335,28 @@ MAP
       END
     END
 
+    PROJECTION
+        'init=epsg:26915' 
+    END
+
     METADATA
-      WMS_TITLE "County Roads"
-      WMS_ABSTRACT "County roads (lines only) derived from MNDOT roads layer."
+      OWS_TITLE "County Roads"
+      OWS_ABSTRACT "County roads (lines only) derived from MNDOT roads layer."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END # county roads
 
   LAYER
     NAME ctyrdln3_anno
     GROUP roads
-    MAXSCALE 300000
+    MAXSCALEDENOM 300000
     STATUS OFF
     DATA ctyrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     LABELITEM "road_name"
     CLASS
@@ -351,18 +374,23 @@ MAP
     END
         
     METADATA
-      WMS_TITLE "County Roads"
-      WMS_ABSTRACT "County roads (shields only) derived from MNDOT roads layer."
+      OWS_TITLE "County Roads"
+      OWS_ABSTRACT "County roads (shields only) derived from MNDOT roads layer."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END # county road annotation
 
   LAYER
     NAME majrdln3
     GROUP roads
-    MAXSCALE 600000
+    MAXSCALEDENOM 600000
     STATUS OFF
     DATA majrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     CLASS
       NAME "Roads"
@@ -372,18 +400,23 @@ MAP
     END
 
     METADATA
-      WMS_TITLE "Highways"
-      WMS_ABSTRACT "Highways- state, US and interstate (lines only) derived from MNDOT roads layer."
+      OWS_TITLE "Highways"
+      OWS_ABSTRACT "Highways- state, US and interstate (lines only) derived from MNDOT roads layer."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END # highways
 
   LAYER
     NAME majrdln3_anno
     GROUP roads
-    MAXSCALE 600000
+    MAXSCALEDENOM 600000
     STATUS OFF
     DATA majrdln3
+    TEMPLATE "ttt"
     TYPE LINE
     LABELITEM "road_num"    
     CLASSITEM "road_class"
@@ -431,9 +464,13 @@ MAP
     END
 
     METADATA
-      WMS_TITLE "Highways"
-      WMS_ABSTRACT "Highways- state, US and interstate (shields only) derived from MNDOT roads layer."
+      OWS_TITLE "Highways"
+      OWS_ABSTRACT "Highways- state, US and interstate (shields only) derived from MNDOT roads layer."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END # highway annotation
 
@@ -461,22 +498,26 @@ MAP
     TOLERANCE 5
 
     METADATA
-      WMS_TITLE "Airports"
-      WMS_ABSTRACT "Airport runways for Itasca County."
+      OWS_TITLE "Airports"
+      OWS_ABSTRACT "Airport runways for Itasca County."
       WMS_SRS "EPSG:26915"
-     "gml_include_items" "all"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END
 
   LAYER
     NAME mcd90py2_anno
     GROUP cities
+    TEMPLATE "ttt"
     TYPE POINT
     DATA mcd90py2
     STATUS OFF
     LABELITEM "city_name"
     CLASSITEM "city_name"
-    LABELMAXSCALE 500000
+    LABELMAXSCALEDENOM 500000
     CLASS
       EXPRESSION /./      
       LABEL
@@ -492,9 +533,13 @@ MAP
     END
 
     METADATA
-      WMS_TITLE "Minor Civil Divisions"
-      WMS_ABSTRACT "Minor civil divisions for Itasca County (annotation only)."
+      OWS_TITLE "Minor Civil Divisions"
+      OWS_ABSTRACT "Minor civil divisions for Itasca County (annotation only)."
       WMS_SRS "EPSG:26915"
+
+      GML_INCLUDE_ITEMS "all"
+      GML_FEATUREID "FID"
+      GML_TYPES "auto"
     END
   END
 
